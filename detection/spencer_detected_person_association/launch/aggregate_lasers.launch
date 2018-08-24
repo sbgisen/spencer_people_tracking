@@ -20,7 +20,7 @@
         <node name="aggregate_lasers" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/AggregateDetectionsNodelet detected_person_association_nodelet_manager" output="screen">
             <rosparam param="input_topics">
                 - composite/laser_front
-                - composite/laser_rear
+                <!-- - composite/laser_rear -->
             </rosparam>
             <remap from="output" to="composite/lasers_aggregated"/>
         </node>

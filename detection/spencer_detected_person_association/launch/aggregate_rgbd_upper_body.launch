@@ -20,7 +20,7 @@
         <node name="aggregate_rgbd_upper_body" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/AggregateDetectionsNodelet detected_person_association_nodelet_manager" output="screen">
             <rosparam param="input_topics">
                 - composite/rgbd_upper_body_front
-                - composite/rgbd_upper_body_rear
+                <!-- - composite/rgbd_upper_body_rear -->
             </rosparam>
             <remap from="output" to="composite/rgbd_upper_body_aggregated"/>
         </node>
