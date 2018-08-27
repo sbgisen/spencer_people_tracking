@@ -20,6 +20,9 @@
     <!-- Laser detectors -->
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch"/> 
 
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
+        <arg name="rear" default="false"/>
+    </include>
 
     <!-- People tracking -->
     <include file="$(find spencer_people_tracking_launch)/launch/tracking/freiburg_people_tracking.launch">
