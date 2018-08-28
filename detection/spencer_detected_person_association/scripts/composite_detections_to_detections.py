@@ -45,6 +45,7 @@ def newCompositeDetectedPersonsAvailable(compositeDetectedPersons):
         detectedPerson.confidence = compositeDetectedPerson.max_confidence
         detectedPerson.pose = compositeDetectedPerson.pose
 
+        detectedPerson.name = ",".join([originalDetection.name for originalDetection in compositeDetectedPerson.original_detections if originalDetection.name])
         involvedModalities = list(set([originalDetection.modality for originalDetection in compositeDetectedPerson.original_detections]))
         detectedPerson.modality = ",".join(sorted(involvedModalities))
 

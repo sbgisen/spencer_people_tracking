@@ -15,6 +15,7 @@ geometry_msgs/PoseWithCovariance    pose
 # used e.g. later in tracking to check which tracks have been visually confirmed
 string          modality            
 
+string          name
                                     
 string          MODALITY_GENERIC_LASER_2D = laser2d
 string          MODALITY_GENERIC_LASER_3D = laser3d
