@@ -126,7 +126,7 @@ void DetectedPersonsDisplay::stylesChanged()
         if(m_render_modality_text_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->modalityText->getCharacterHeight();
 
         detectedPersonVisual->nameText->setCharacterHeight(0.18 * m_commonProperties->font_scale->getFloat());
-        detectedPersonVisual->nameText->setPosition(Ogre::Vector3(textOffset*2, 0, -0.5*detectedPersonVisual->nameText->getCharacterHeight() - textOffset));
+        detectedPersonVisual->nameText->setPosition(Ogre::Vector3(-0.5*textOffset, 0, -0.5*detectedPersonVisual->nameText->getCharacterHeight() - textOffset));
         detectedPersonVisual->nameText->setVisible(m_render_name_text_property->getBool());
         detectedPersonVisual->nameText->setColor(fontColor);
         if(m_render_name_text_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->nameText->getCharacterHeight();
