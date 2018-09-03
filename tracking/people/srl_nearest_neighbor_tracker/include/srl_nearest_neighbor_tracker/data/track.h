@@ -34,6 +34,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/circular_buffer.hpp>
 #include <vector>
+#include <string>
 
 
 #include <srl_nearest_neighbor_tracker/data/observation.h>
@@ -65,6 +66,8 @@ struct Track
 
     /// Model index for IMM Models
     model_index model_idx;
+
+    std::string name;
 
     /// Initializing or matching Observation. NULL for OCCLUDED or DELETED tracks.
     Observation::Ptr observation;

@@ -144,8 +144,8 @@ void ROSInterface::publishTracks(ros::Time currentRosTime, const Tracks& tracks)
             case Track::NEW:
                 trackedPerson.is_matched = true;
                 trackedPerson.is_occluded = false;
-                trackedPerson.name = track->observation->name;
-                person.name = track->observation->name;
+                trackedPerson.name = track->name;
+                person.name = track->name;
                 trackedPerson.detection_id = track->observation->id;
                 break;
             case Track::MISSED:
