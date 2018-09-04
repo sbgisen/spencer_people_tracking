@@ -13,7 +13,7 @@
     <include file="$(find spencer_detected_person_association)/launch/aggregate_lasers.launch"/>
 
     <!-- Aggregate high-recall laser detectors -->
-    <!-- <include file="$(find spencer_detected_person_association)/launch/aggregate_high_recall_lasers.launch"/> -->
+    <include file="$(find spencer_detected_person_association)/launch/aggregate_high_recall_lasers.launch"/>
 
     
     <!-- Aggregate RGB-D detections (optional) -->

@@ -19,8 +19,8 @@
         <!-- Aggregate front and rear lasers -->
         <node name="aggregate_high_recall_lasers" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/AggregateDetectionsNodelet detected_person_association_nodelet_manager" output="screen">
             <rosparam param="input_topics">
-                <!-- - composite/laser_front_high_recall
-                - composite/laser_rear_high_recall -->
+                - composite/laser_front_high_recall
+                <!-- - composite/laser_rear_high_recall -->
             </rosparam>
             <remap from="output" to="composite/lasers_high_recall_aggregated"/>
         </node>
