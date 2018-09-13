@@ -357,7 +357,7 @@ int main(int argc, char **argv)
 
     topic_color_image = cam_ns + "/color/image_rect_color";
     string topic_depth_image = cam_ns + "/depth/image_rect_metric";
-    string topic_camera_info = cam_ns + "/depth/camera_info";
+    string topic_camera_info = cam_ns + "/color/camera_info";
 
     // New parameters for SPENCER
     private_node_handle_.param("detection_id_increment", detection_id_increment, 1);
