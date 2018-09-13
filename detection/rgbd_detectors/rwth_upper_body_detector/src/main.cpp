@@ -335,6 +335,9 @@ int main(int argc, char **argv)
     // Declare variables that can be modified by launch file or command line.
     int queue_size;
     string cam_ns;
+    string color_topic;
+    string depth_topic;
+    string camera_info_topic;
     string config_file;
     string template_path;
     string topic_gp;
@@ -353,11 +356,14 @@ int main(int argc, char **argv)
     private_node_handle_.param("template_file", template_path, string(""));
 
     private_node_handle_.param("camera_namespace", cam_ns, string("/camera"));
+    private_node_handle_.param("color_image_topic", color_topic, string("/color/image_rect_color"));
+    private_node_handle_.param("depth_image_topic", depth_topic, string("/depth/image_rect_metric"));
+    private_node_handle_.param("camera_info_topic", camera_info_topic, string("/color/camera_info"));
     private_node_handle_.param("ground_plane", topic_gp, string("/ground_plane"));
 
-    topic_color_image = cam_ns + "/color/image_rect_color";
-    string topic_depth_image = cam_ns + "/depth/image_rect_metric";
-    string topic_camera_info = cam_ns + "/color/camera_info";
+    topic_color_image = cam_ns + color_topic;
+    string topic_depth_image = cam_ns + depth_topic;
+    string topic_camera_info = cam_ns + camera_info_topic;
 
     // New parameters for SPENCER
     private_node_handle_.param("detection_id_increment", detection_id_increment, 1);
