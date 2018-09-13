@@ -356,7 +356,7 @@ int main(int argc, char **argv)
     private_node_handle_.param("ground_plane", topic_gp, string("/ground_plane"));
 
     topic_color_image = cam_ns + "/color/image_rect_color";
-    string topic_depth_image = cam_ns + "/depth/image_rect_raw";
+    string topic_depth_image = cam_ns + "/depth/image_rect_metric";
     string topic_camera_info = cam_ns + "/depth/camera_info";
 
     // New parameters for SPENCER
