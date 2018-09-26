@@ -104,6 +104,8 @@ namespace spencer_detected_person_association
 
         // Copy stamp, frame ID, seq
         outputMsg->header = inputMsg->header;
+        outputMsg->header.stamp = ros::Time::now();
+
 
         bool needTransform = false;
         Eigen::Affine3d eigenTransform;
