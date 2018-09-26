@@ -22,5 +22,10 @@
         <!-- <include file="$(find spencer_detected_person_association)/launch/aggregate_rgbd_ground_hog.launch"/> -->
     </group>
 
+    <!-- Aggregate face detections (care-o-bot) -->
+    <group if="$(arg rgbd)">
+        <include file="$(find spencer_detected_person_association)/launch/aggregate_faces.launch"/>
+    </group>
+
 
 </launch>
