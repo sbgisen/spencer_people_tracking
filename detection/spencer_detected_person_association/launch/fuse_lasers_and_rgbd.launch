@@ -9,9 +9,11 @@
         -->
 
         <!-- Fuse lasers with upper-body. Both have reliable depth estimates, so we can fuse in Euclidean space -->
-        <node name="fuse_lasers_and_rgbd_upper_body" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
+<!--         <node name="fuse_lasers_and_rgbd_upper_body" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
             <param name="detection_id_increment" value="20"/>
             <param name="detection_id_offset" value="11"/>
+            <param name="fused_radial_weight_for_topic1" value="0.95"/>
+            <param name="fused_radial_weight_for_topic2" value="0.05"/>
             <rosparam param="input_topics">
                 - composite/lasers_aggregated
                 - composite/rgbd_upper_body_aggregated
@@ -27,6 +29,32 @@
             <rosparam param="input_topics">
                 - composite/lasers_upper_body_fused
                 - composite/faces_aggregated
+            </rosparam>
+            <remap from="output" to="composite/lasers_upper_body_face_fused"/>
+        </node>
+ -->
+
+
+         <node name="fuse_face_and_body" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
+            <param name="detection_id_increment" value="20"/>
+            <param name="detection_id_offset" value="11"/>
+            <param name="fused_radial_weight_for_topic1" value="0.5"/>
+            <param name="fused_radial_weight_for_topic2" value="0.5"/>
+            <rosparam param="input_topics">
+                - composite/faces_aggregated
+                - composite/rgbd_upper_body_aggregated
+            </rosparam>
+            <remap from="output" to="composite/face_body_fused"/>
+        </node>
+
+         <node name="fuse_lasers_and_facebody" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
+            <param name="detection_id_increment" value="20"/>
+            <param name="detection_id_offset" value="12"/>
+            <param name="fused_radial_weight_for_topic1" value="0.95"/>
+            <param name="fused_radial_weight_for_topic2" value="0.05"/>
+            <rosparam param="input_topics">
+                - composite/lasers_aggregated
+                - composite/face_body_fused
             </rosparam>
             <remap from="output" to="composite/lasers_upper_body_face_fused"/>
         </node>

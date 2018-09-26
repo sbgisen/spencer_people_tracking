@@ -104,7 +104,6 @@ namespace spencer_detected_person_association
 
         // Copy stamp, frame ID, seq
         outputMsg->header = inputMsg->header;
-        outputMsg->header.stamp = ros::Time::now();
 
 
         bool needTransform = false;
@@ -178,6 +177,7 @@ namespace spencer_detected_person_association
 
             outputMsg->elements.push_back(compositeDetectedPerson);
         }
+//        outputMsg->header.stamp = ros::Time::now();
 
         boost::mutex::scoped_lock lock(m_monitorMutex);
         if(!m_publisher) createPublisher();
