@@ -54,9 +54,9 @@ void DetectedPersonsDisplay::onInitialize()
     m_render_confidences_property       = new rviz::BoolProperty( "Render confidences", false, "Render detection confidences", this, SLOT(stylesChanged()));
     m_render_orientations_property      = new rviz::BoolProperty( "Render orientation arrows", true, "Render orientation arrows (only if orientation covariances are finite!)", this, SLOT(stylesChanged()));
     m_render_modality_text_property     = new rviz::BoolProperty( "Render modality text", false, "Render detection modality as text below detected person", this, SLOT(stylesChanged()));
-    m_render_name_text_property     = new rviz::BoolProperty( "Render name", true, "Render detection name as text below detected person", this, SLOT(stylesChanged()));
+    m_render_name_text_property         = new rviz::BoolProperty( "Render name", true, "Render detection name as text below detected person", this, SLOT(stylesChanged()));
 
-    m_text_spacing_property = new rviz::FloatProperty( "Text spacing", 1.0, "Factor for vertical spacing betweent texts", this, SLOT(stylesChanged()), this );
+    m_text_spacing_property 			= new rviz::FloatProperty( "Text spacing", 1.0, "Factor for vertical spacing betweent texts", this, SLOT(stylesChanged()), this );
     
     m_low_confidence_threshold_property = new rviz::FloatProperty( "Low-confidence threshold", 0.5, "Detection confidence below which alpha will be reduced", this, SLOT(stylesChanged()));
     m_low_confidence_alpha_property     = new rviz::FloatProperty( "Low-confidence alpha", 0.5, "Alpha multiplier for detections with confidence below low-confidence threshold", this, SLOT(stylesChanged()));
@@ -119,17 +119,17 @@ void DetectedPersonsDisplay::stylesChanged()
         detectedPersonVisual->detectionIdText->setColor(fontColor);
         if(m_render_detection_ids_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->detectionIdText->getCharacterHeight();
 
-        detectedPersonVisual->modalityText->setCharacterHeight(0.18 * m_commonProperties->font_scale->getFloat());
-        detectedPersonVisual->modalityText->setPosition(Ogre::Vector3(textOffset, 0, -0.5*detectedPersonVisual->modalityText->getCharacterHeight() - textOffset));
-        detectedPersonVisual->modalityText->setVisible(m_render_modality_text_property->getBool());
-        detectedPersonVisual->modalityText->setColor(fontColor);
-        if(m_render_modality_text_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->modalityText->getCharacterHeight();
-
         detectedPersonVisual->nameText->setCharacterHeight(0.18 * m_commonProperties->font_scale->getFloat());
         detectedPersonVisual->nameText->setPosition(Ogre::Vector3(-0.5*textOffset, 0, -0.5*detectedPersonVisual->nameText->getCharacterHeight() - textOffset));
         detectedPersonVisual->nameText->setVisible(m_render_name_text_property->getBool());
         detectedPersonVisual->nameText->setColor(fontColor);
         if(m_render_name_text_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->nameText->getCharacterHeight();
+
+        detectedPersonVisual->modalityText->setCharacterHeight(0.18 * m_commonProperties->font_scale->getFloat());
+        detectedPersonVisual->modalityText->setPosition(Ogre::Vector3(textOffset, 0, -0.5*detectedPersonVisual->modalityText->getCharacterHeight() - textOffset));
+        detectedPersonVisual->modalityText->setVisible(m_render_modality_text_property->getBool());
+        detectedPersonVisual->modalityText->setColor(fontColor);
+        if(m_render_modality_text_property->getBool()) textOffset += m_text_spacing_property->getFloat() * detectedPersonVisual->modalityText->getCharacterHeight();
 
         detectedPersonVisual->confidenceText->setCharacterHeight(0.13 * m_commonProperties->font_scale->getFloat());
         detectedPersonVisual->confidenceText->setPosition(Ogre::Vector3(textOffset, 0, -0.5*detectedPersonVisual->confidenceText->getCharacterHeight() - textOffset));
@@ -213,6 +213,16 @@ void DetectedPersonsDisplay::processMessage(const spencer_tracking_msgs::Detecte
             ss.str(""); ss << "det " << detectedPersonIt->detection_id;
             detectedPersonVisual->detectionIdText->setCaption(ss.str());
 
+            // Name text
+            if (!detectedPersonVisual->nameText) {
+                detectedPersonVisual->nameText.reset(new TextNode(context_->getSceneManager(), currentSceneNode));
+                detectedPersonVisual->nameText->showOnTop();
+            }
+            ss.str(""); ss << "NAME: " << detectedPersonIt->name;
+            detectedPersonVisual->nameText->setCaption(ss.str());
+
+
+
             // Confidence value
             if (!detectedPersonVisual->confidenceText) {
                 detectedPersonVisual->confidenceText.reset(new TextNode(context_->getSceneManager(), currentSceneNode));
@@ -231,14 +241,7 @@ void DetectedPersonsDisplay::processMessage(const spencer_tracking_msgs::Detecte
             detectedPersonVisual->modalityText->setCaption(ss.str());
             detectedPersonVisual->modalityText->showOnTop();
 
-            // Name text
-            if (!detectedPersonVisual->nameText) {
-                detectedPersonVisual->nameText.reset(new TextNode(context_->getSceneManager(), currentSceneNode));
-            }
 
-            ss.str(""); ss << "@" << detectedPersonIt->name;
-            detectedPersonVisual->nameText->setCaption(ss.str());
-            detectedPersonVisual->nameText->showOnTop();
         }
 
         //

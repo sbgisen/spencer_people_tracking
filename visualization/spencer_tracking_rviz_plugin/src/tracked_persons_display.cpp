@@ -215,14 +215,21 @@ void TrackedPersonsDisplay::stylesChanged()
         trackedPersonVisual->stateText->setColor(fontColor);
         trackedPersonVisual->stateText->setPosition(Ogre::Vector3(0,0, personHeight + trackedPersonVisual->stateText->getCharacterHeight()));
             
-        const double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
+
+        //set tracking id visualization param
+//        const double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
+        double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
         trackedPersonVisual->idText->setCharacterHeight(0.25 * m_commonProperties->font_scale->getFloat());
         trackedPersonVisual->idText->setVisible(m_render_ids_property->getBool() && trackVisible);
         trackedPersonVisual->idText->setColor(fontColor);
         trackedPersonVisual->idText->setPosition(Ogre::Vector3(0,0, personHeight + trackedPersonVisual->idText->getCharacterHeight() + stateTextOffset));
 
-        trackedPersonVisual->nameText->setCharacterHeight(0.18 * m_commonProperties->font_scale->getFloat());
-        trackedPersonVisual->nameText->setPosition(Ogre::Vector3(-1, 0, -0.5*trackedPersonVisual->nameText->getCharacterHeight()) + stateTextOffset);
+        //set name visualization params
+        stateTextOffset += (m_render_ids_property->getBool() ? 1.2*trackedPersonVisual->idText->getCharacterHeight() : 0);
+        trackedPersonVisual->nameText->setCharacterHeight(0.25 * m_commonProperties->font_scale->getFloat());
+        trackedPersonVisual->nameText->setPosition(Ogre::Vector3(0,0, personHeight
+				+ trackedPersonVisual->nameText->getCharacterHeight() + stateTextOffset
+        		));//setPosition(Ogre::Vector3(-1, 0, -0.5*trackedPersonVisual->nameText->getCharacterHeight()) + stateTextOffset);
         trackedPersonVisual->nameText->setVisible(m_render_name_text_property->getBool());
         trackedPersonVisual->nameText->setColor(fontColor);
 
