@@ -11,7 +11,7 @@
     <arg name="world_scale" default="1"/>
     <arg name="score_thresh" default="0.0"/>
 
-    <node pkg="rwth_ground_hog" type="groundHOG" name="groundHOG" output="screen">
+    <node pkg="rwth_ground_hog" type="groundHOG" name="groundHOG" output="screen" launch-prefix="nice -n 20">
         <param name="world_scale" value="$(arg world_scale)"/>
         <param name="score_thresh" value="$(arg score_thresh)"/>
         <param name="model" value="$(arg model)" type="string"/>
