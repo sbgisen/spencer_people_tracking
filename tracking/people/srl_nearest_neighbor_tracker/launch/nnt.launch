@@ -16,7 +16,7 @@ Launches the nearest-neighbor tracker with a set of parameters that worked well 
     <arg name="occlusion_param_file" default="occlusion_manager_polygon.yaml"/>
 
 
-    <node name="srl_nearest_neighbor_tracker" type="nnt_node" pkg="srl_nearest_neighbor_tracker" output="screen" clear_params="true" launch-prefix=""> <!-- launch-prefix="gdb -ex run -args " -->
+    <node name="srl_nearest_neighbor_tracker" type="nnt_node" pkg="srl_nearest_neighbor_tracker" output="screen" clear_params="true"  launch-prefix="nice -n 20"> <!-- launch-prefix="gdb -ex run -args " -->
         <!-- Topic of secondary low-confidence detections that can be matched against an existing track, but not initiate a new one -->
         <param name="additional_low_confidence_detections" value="$(arg low_confidence_observations_topic)"/>
 
