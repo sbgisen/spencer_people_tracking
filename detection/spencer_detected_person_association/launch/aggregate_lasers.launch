@@ -9,10 +9,16 @@
             <remap from="output" to="composite/laser_front"/>
             <param name="common_frame_id" value="$(arg common_frame_id)"/>
         </node>
-
+	<!--
         <node name="convert_to_composite_laser_rear" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/ConvertToCompositeDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
             <remap from="input" to="/spencer/perception_internal/detected_persons/laser_rear"/>
             <remap from="output" to="composite/laser_rear"/>
+            <param name="common_frame_id" value="$(arg common_frame_id)"/>
+        </node> 
+	-->
+        <node name="convert_to_composite_laser_foot_rear" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/ConvertToCompositeDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
+            <remap from="input" to="/spencer/perception_internal/detected_persons/laser_foot_front"/>
+            <remap from="output" to="composite/laser_foot_front"/>
             <param name="common_frame_id" value="$(arg common_frame_id)"/>
         </node> 
 
@@ -20,7 +26,7 @@
         <node name="aggregate_lasers" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/AggregateDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
             <rosparam param="input_topics">
                 - composite/laser_front
-                - composite/laser_rear
+                - composite/laser_foot_front
             </rosparam>
             <remap from="output" to="composite/lasers_aggregated"/>
         </node>

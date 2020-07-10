@@ -4,17 +4,17 @@
 
         <!-- Fix orientation of non-moving targets (assume previous orientation while it was still moving, or face towards sensor if unknown) -->
         <node name="fix_orientation_of_non_moving_targets" pkg="spencer_tracking_utils" type="fix_orientation_of_non_moving_targets" launch-prefix="nice -n 20">
-            <param name="min_required_avg_velocity" value="0.15"/>
+            <param name="min_required_avg_velocity" value="0.3"/>
             <remap from="input_tracks" to="/spencer/perception/tracked_persons"/>
             <remap from="output_tracks" to="/spencer/perception/tracked_persons_orientation_fixed"/>
         </node>
 
         <!-- Filter out non-moving targets -->
         <node name="filter_non_moving_targets" pkg="spencer_tracking_utils" type="filter_non_moving_targets" launch-prefix="nice -n 20">
-            <param name="num_frames_to_observe" value="12"/>
-            <param name="max_timespan_to_observe" value="10.0"/>
-            <param name="min_required_avg_velocity" value="0.35"/>
-            <param name="delete_unseen_tracks_after_num_frames" value="15"/>
+            <param name="num_frames_to_observe" value="6"/>
+            <param name="max_timespan_to_observe" value="1.0"/>
+            <param name="min_required_avg_velocity" value="0.8"/>
+            <param name="delete_unseen_tracks_after_num_frames" value="9"/>
             <remap from="input_tracks" to="/spencer/perception/tracked_persons_orientation_fixed"/>
             <remap from="output_tracks" to="/spencer/perception/tracked_persons_moving"/>
         </node>

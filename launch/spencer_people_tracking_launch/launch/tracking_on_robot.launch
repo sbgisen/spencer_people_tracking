@@ -5,6 +5,7 @@
 
 
     <!-- RGB-D detectors -->
+    <!--
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/front_rgbd_detectors.launch">
         <arg name="upper_body" value="$(arg use_upper_body_detector)"/>
         <arg name="pcl_detector" value="$(arg use_pcl_detector)"/>
@@ -16,22 +17,23 @@
         <arg name="pcl_detector" value="$(arg use_pcl_detector)"/>
         <arg name="hog" value="$(arg use_hog_detector)"/>
     </include>
+    -->
 
     <!-- Laser detectors -->
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch">
-        <arg name="low_confidence_detections" default="false"/>
-        <arg name="laser_max_distance" default="5"/>
+        <arg name="low_confidence_detections" value="false"/>
+        <arg name="laser_max_distance" value="5"/>
     </include>
 
     <!-- Leg detectors -->
-<!--     <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
-        <arg name="rear" default="false"/>
-    </include> -->
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
+        <arg name="rear" value="false"/>
+    </include>
 
     <!-- People tracking -->
     <include file="$(find spencer_people_tracking_launch)/launch/tracking/freiburg_people_tracking.launch">
-        <arg name="rgbd" default="false"/>
-        <arg name="laser_low_confidence_detections" default="false"/>
+        <arg name="rgbd" value="false"/>
+        <arg name="laser_low_confidence_detections" value="false"/>
     </include>
 
     <!-- Group tracking -->
