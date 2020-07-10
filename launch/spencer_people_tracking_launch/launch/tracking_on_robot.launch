@@ -1,5 +1,5 @@
 <launch>
-    <arg name="use_upper_body_detector" default="true"/> <!-- use depth-template-based upper-body detector? -->
+    <arg name="use_upper_body_detector" default="false"/> <!-- use depth-template-based upper-body detector? -->
     <arg name="use_pcl_detector" default="false"/> <!-- use ROI-HOG detector from PCL library? cannot be used with upper-body detector at the same time! -->
     <arg name="use_hog_detector" default="false"/> <!-- use RGB groundHOG detector? Requires cudaHOG library-->
 
@@ -18,19 +18,23 @@
     </include>
 
     <!-- Laser detectors -->
-    <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch"/> 
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch">
+        <arg name="low_confidence_detections" default="false"/>
+        <arg name="laser_max_distance" default="5"/>
+    </include>
 
-    <!-- <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
+    <!-- Leg detectors -->
+<!--     <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
         <arg name="rear" default="false"/>
     </include> -->
 
     <!-- People tracking -->
     <include file="$(find spencer_people_tracking_launch)/launch/tracking/freiburg_people_tracking.launch">
-        <arg name="rgbd" default="true"/>
-        <arg name="laser_low_confidence_detections" default="true"/>
+        <arg name="rgbd" default="false"/>
+        <arg name="laser_low_confidence_detections" default="false"/>
     </include>
 
     <!-- Group tracking -->
-    <include file="$(find spencer_people_tracking_launch)/launch/tracking/group_tracking.launch"/> 
+    <!-- <include file="$(find spencer_people_tracking_launch)/launch/tracking/group_tracking.launch"/>  -->
 
 </launch>
