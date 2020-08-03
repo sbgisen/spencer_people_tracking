@@ -1,7 +1,7 @@
 <!-- Fuses front and rear laser by simple aggregation. -->
 <launch>
     <group ns="/spencer/perception_internal/detected_person_association">
-        <!-- 
+        <!--
             We need to fuse the following topics, which are already aggregated over front and rear sensor array:
             - composite/lasers_aggregated
             - composite/rgbd_upper_body_aggregated
@@ -24,8 +24,8 @@
         <node name="fuse_lasers_upper_body_and_face" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
             <param name="detection_id_increment" value="20" />
             <param name="detection_id_offset" value="12" />
-            <param name="fused_radial_weight_for_topic1" value="0.95" />
-            <param name="fused_radial_weight_for_topic2" value="0.05" />
+            <param name="fused_radial_weight_for_topic1" value="0.99" />
+            <param name="fused_radial_weight_for_topic2" value="0.01" />
             <rosparam param="input_topics">
                 - composite/lasers_upper_body_fused
                 - composite/faces_aggregated
