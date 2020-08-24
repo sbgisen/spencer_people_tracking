@@ -34,14 +34,14 @@
     <!-- Filter detections by static map -->
     <group ns="/spencer/perception_internal/people_detection" if="$(arg static_map_filter)">
         <!-- Normal detections -->
-        <node name="filter_detections_by_static_map" pkg="spencer_tracking_utils" type="filter_detections_by_static_map" output="screen">
+        <node name="filter_detections_by_static_map" pkg="spencer_tracking_utils" type="filter_detections_by_static_map" output="screen" launch-prefix="nice -n 20">
             <remap from="input_detections" to="/spencer/perception/detected_persons_unfiltered"/>
             <remap from="output_detections" to="/spencer/perception/detected_persons"/>
             <rosparam param="modalities_to_always_passthrough">[rgbd]</rosparam>  <!-- only filter out laser and monocular vision, as RGB-D does not have many false positives -->
         </node>
 
         <!-- High-recall detections -->
-        <node name="filter_low_confidence_detections_by_static_map" pkg="spencer_tracking_utils" type="filter_detections_by_static_map" output="screen">
+        <node name="filter_low_confidence_detections_by_static_map" pkg="spencer_tracking_utils" type="filter_detections_by_static_map" output="screen" launch-prefix="nice -n 20">
             <remap from="input_detections" to="/spencer/perception_internal/detected_person_association/lasers_high_recall_aggregated_unfiltered"/>
             <remap from="output_detections" to="/spencer/perception_internal/detected_person_association/lasers_high_recall_aggregated"/>
             <rosparam param="modalities_to_always_passthrough">[rgbd]</rosparam>  <!-- only filter out laser and monocular vision, as RGB-D does not have many false positives -->

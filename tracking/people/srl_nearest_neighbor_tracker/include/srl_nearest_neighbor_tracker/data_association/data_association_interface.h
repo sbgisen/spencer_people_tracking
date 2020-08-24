@@ -60,6 +60,8 @@ protected:
 
         pairing->validated = true;
         pairing->observation->matched = true;
+        if(pairing->observation->name != "")
+            track->name = pairing->observation->name;
         track->observation = pairing->observation;
         track->trackStatus = Track::MATCHED;
         track->numberOfTotalMatches++;

@@ -42,6 +42,7 @@
 #include <spencer_tracking_msgs/DetectedPersons.h>
 #include <spencer_tracking_msgs/TrackedPersons.h>
 
+#include <people_msgs/People.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/UInt16.h>
 
@@ -87,6 +88,7 @@ private:
     ros::NodeHandle m_nodeHandle, m_privateNodeHandle;
     ros::Subscriber m_detectedPersonsSubscriber;
 
+    ros::Publisher m_peoplePublisher;
     spencer_diagnostics::MonitoredPublisher m_trackedPersonsPublisher;
     ros::Publisher m_averageProcessingRatePublisher, m_averageCycleTimePublisher, m_trackCountPublisher, m_averageLoadPublisher, m_timingMetricsPublisher;
     

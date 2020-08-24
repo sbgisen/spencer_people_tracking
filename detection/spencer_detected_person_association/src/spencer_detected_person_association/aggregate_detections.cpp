@@ -49,6 +49,7 @@ namespace spencer_detected_person_association
 
         outputMsg->header.frame_id = inputMsgs[0]->header.frame_id;
         outputMsg->header.seq = m_seq++;
+        //outputMsg->header.stamp = ros::Time::now();
 
         foreach(const spencer_tracking_msgs::CompositeDetectedPersons::ConstPtr& inputMsg, inputMsgs)
         {

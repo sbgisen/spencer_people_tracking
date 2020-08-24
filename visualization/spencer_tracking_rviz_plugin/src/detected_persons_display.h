@@ -46,7 +46,7 @@ namespace spencer_tracking_rviz_plugin
         boost::shared_ptr<Ogre::SceneNode> sceneNode;
 
         boost::shared_ptr<PersonVisual> personVisual;
-        boost::shared_ptr<TextNode> detectionIdText, confidenceText, modalityText;
+        boost::shared_ptr<TextNode> detectionIdText, confidenceText, modalityText, nameText;
         boost::shared_ptr<rviz::Arrow> orientationArrow;
         boost::shared_ptr<CovarianceVisual> covarianceVisual;
 
@@ -104,6 +104,7 @@ namespace spencer_tracking_rviz_plugin
         rviz::FloatProperty* m_low_confidence_alpha_property;
         rviz::BoolProperty* m_render_orientations_property;
         rviz::BoolProperty* m_render_modality_text_property;
+        rviz::BoolProperty* m_render_name_text_property;
 
         rviz::FloatProperty* m_text_spacing_property;
         rviz::FloatProperty* m_covariance_line_width_property;

@@ -35,6 +35,7 @@
 #include <vector>
 #include <set>
 #include <Eigen/Core>
+#include <string>
 
 #include <srl_nearest_neighbor_tracker/base/defs.h>
 
@@ -49,6 +50,8 @@ struct Observation
 {
     /// ID of the Observation. 
     observation_id id;
+
+    std::string name;
 
     /// Creation time of the observation in seconds. Usually set from ROS header or logfile timestamp.
     double createdAt;

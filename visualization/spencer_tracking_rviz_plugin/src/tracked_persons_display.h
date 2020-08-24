@@ -64,7 +64,7 @@ namespace spencer_tracking_rviz_plugin
         boost::shared_ptr<Ogre::SceneNode> sceneNode, historySceneNode, historyLineSceneNode;
 
         boost::shared_ptr<PersonVisual> personVisual;
-        boost::shared_ptr<TextNode> idText, detectionIdText, stateText;
+        boost::shared_ptr<TextNode> idText, detectionIdText, stateText, nameText;
         boost::shared_ptr<rviz::Arrow> velocityArrow;
         boost::shared_ptr<CovarianceVisual> covarianceVisual;
 
@@ -145,6 +145,7 @@ namespace spencer_tracking_rviz_plugin
         rviz::BoolProperty* m_render_ids_property;
         rviz::BoolProperty* m_render_detection_ids_property;
         rviz::BoolProperty* m_render_track_state_property;
+        rviz::BoolProperty* m_render_name_text_property;
 
         rviz::FloatProperty* m_history_line_width_property;
         rviz::FloatProperty* m_history_min_point_distance_property;

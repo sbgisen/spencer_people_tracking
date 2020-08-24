@@ -403,6 +403,9 @@ int main(int argc, char **argv)
     // Declare variables that can be modified by launch file or command line.
     int queue_size;
     string cam_ns;
+    string color_topic;
+    string depth_topic;
+    string camera_info_topic;
     string config_file;
     string template_path;
     string topic_gp;
@@ -424,6 +427,9 @@ int main(int argc, char **argv)
     private_node_handle_.param("template_file", template_path, string(""));
 
     private_node_handle_.param("camera_namespace", cam_ns, string("/camera"));
+    private_node_handle_.param("color_image_topic", color_topic, string("/color/image_rect_color"));
+    private_node_handle_.param("depth_image_topic", depth_topic, string("/depth/image_rect_metric"));
+    private_node_handle_.param("camera_info_topic", camera_info_topic, string("/color/camera_info"));
     private_node_handle_.param("ground_plane", topic_gp, string("/ground_plane"));
 
     std::vector<double> up_temp;

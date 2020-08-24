@@ -52,6 +52,8 @@ ROSInterface::ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& private
     m_trackedPersonsPublisher.setMaximumTimestampOffset(0.3, 0.1);
     m_trackedPersonsPublisher.finalizeSetup();
 
+    m_peoplePublisher = m_privateNodeHandle.advertise<people_msgs::People>("/people", 1);
+
     // Forward prediction time for track center to take latencies into account
     m_forwardPredictTime = srl_nnt::Params::get<double>("published_track_forward_predict_time", 0.1); // in seconds (e.g. at 1.5m/s, shift centroid forward by 0.1*1.5=0.15m)
     
@@ -127,8 +129,12 @@ void ROSInterface::publishTracks(ros::Time currentRosTime, const Tracks& tracks)
     trackedPersons.header.seq = m_tracker->getCurrentCycleNo();
     trackedPersons.header.frame_id = m_geometryUtils.getWorldFrame();
 
+    people_msgs::People people;
+    people.header = trackedPersons.header;
+
     foreach(Track::Ptr track, tracks) {
         spencer_tracking_msgs::TrackedPerson trackedPerson;    
+        people_msgs::Person person;
 
         trackedPerson.track_id = track->id;
         trackedPerson.age = ros::Duration(currentRosTime.toSec() - track->createdAt);
@@ -138,6 +144,8 @@ void ROSInterface::publishTracks(ros::Time currentRosTime, const Tracks& tracks)
             case Track::NEW:
                 trackedPerson.is_matched = true;
                 trackedPerson.is_occluded = false;
+                trackedPerson.name = track->name;
+                person.name = track->name;
                 trackedPerson.detection_id = track->observation->id;
                 break;
             case Track::MISSED:
@@ -174,12 +182,18 @@ void ROSInterface::publishTracks(ros::Time currentRosTime, const Tracks& tracks)
             continue;
         }
 
+        person.position = trackedPerson.pose.pose.position;
+        person.velocity.x = trackedPerson.twist.twist.linear.x;
+        person.velocity.y = trackedPerson.twist.twist.linear.y;
+        person.velocity.z = trackedPerson.twist.twist.linear.z;
         trackedPersons.tracks.push_back(trackedPerson);
+        people.people.push_back(person);
     }
 
     // Publish tracked persons
     ROS_INFO("Publishing %zi tracked persons!", tracks.size());
     m_trackedPersonsPublisher.publish(trackedPersons);
+    m_peoplePublisher.publish(people);
 
     // Publish track count
     std_msgs::UInt16 trackCountMsg;

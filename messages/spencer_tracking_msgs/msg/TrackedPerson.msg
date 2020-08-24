@@ -6,6 +6,7 @@ bool        is_occluded     # if the track is currently not observable in a phys
 bool        is_matched      # if the track is currently matched by a detection
 uint64      detection_id    # id of the corresponding detection in the current cycle (undefined if occluded)
 duration    age             # age of the track
+string      name
 
 # The following fields are extracted from the Kalman state x and its covariance C
 

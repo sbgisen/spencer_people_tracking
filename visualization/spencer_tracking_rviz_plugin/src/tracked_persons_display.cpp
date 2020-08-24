@@ -82,6 +82,7 @@ void TrackedPersonsDisplay::onInitialize()
     m_render_ids_property               = new rviz::BoolProperty( "Render track IDs", true, "Render track IDs as text", this, SLOT(stylesChanged()));
     m_render_detection_ids_property     = new rviz::BoolProperty( "Render detection IDs", true, "Render IDs of the detection that a track was matched against, if any", this, SLOT(stylesChanged()));
     m_render_track_state_property       = new rviz::BoolProperty( "Render track state", true, "Render track state text", this, SLOT(stylesChanged()));
+    m_render_name_text_property     = new rviz::BoolProperty( "Render name", true, "Render detection name as text below detected person", this, SLOT(stylesChanged()));
 
     m_history_min_point_distance_property = new rviz::FloatProperty( "Min. history point distance", 0.4, "Minimum distance between history points before a new one is placed", this, SLOT(stylesChanged()) );
     m_history_line_width_property = new rviz::FloatProperty( "Line width", 0.05, "Line width of history", m_render_history_as_line_property, SLOT(stylesChanged()), this );
@@ -215,11 +216,23 @@ void TrackedPersonsDisplay::stylesChanged()
         trackedPersonVisual->stateText->setColor(fontColor);
         trackedPersonVisual->stateText->setPosition(Ogre::Vector3(0,0, personHeight + trackedPersonVisual->stateText->getCharacterHeight()));
             
-        const double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
+
+        //set tracking id visualization param
+//        const double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
+        double stateTextOffset = m_render_track_state_property->getBool() ? 1.2*trackedPersonVisual->stateText->getCharacterHeight() : 0;
         trackedPersonVisual->idText->setCharacterHeight(0.25 * m_commonProperties->font_scale->getFloat());
         trackedPersonVisual->idText->setVisible(m_render_ids_property->getBool() && trackVisible);
         trackedPersonVisual->idText->setColor(fontColor);
         trackedPersonVisual->idText->setPosition(Ogre::Vector3(0,0, personHeight + trackedPersonVisual->idText->getCharacterHeight() + stateTextOffset));
+
+        //set name visualization params
+        stateTextOffset += (m_render_ids_property->getBool() ? 1.2*trackedPersonVisual->idText->getCharacterHeight() : 0);
+        trackedPersonVisual->nameText->setCharacterHeight(0.25 * m_commonProperties->font_scale->getFloat());
+        trackedPersonVisual->nameText->setPosition(Ogre::Vector3(0,0, personHeight
+				+ trackedPersonVisual->nameText->getCharacterHeight() + stateTextOffset
+        		));//setPosition(Ogre::Vector3(-1, 0, -0.5*trackedPersonVisual->nameText->getCharacterHeight()) + stateTextOffset);
+        trackedPersonVisual->nameText->setVisible(m_render_name_text_property->getBool());
+        trackedPersonVisual->nameText->setColor(fontColor);
 
         // Update velocity arrow color
         double arrowAlpha = m_render_velocities_property->getBool() ? trackColor.a : 0.0;
@@ -408,6 +421,15 @@ void TrackedPersonsDisplay::processMessage(const spencer_tracking_msgs::TrackedP
             // Track ID
             ss.str(""); ss << trackedPersonIt->track_id;
             trackedPersonVisual->idText->setCaption(ss.str());
+
+            // Name text
+            if (!trackedPersonVisual->nameText) {
+                trackedPersonVisual->nameText.reset(new TextNode(context_->getSceneManager(), currentSceneNode));
+            }
+
+            ss.str(""); ss << "@" << trackedPersonIt->name;
+            trackedPersonVisual->nameText->setCaption(ss.str());
+            trackedPersonVisual->nameText->showOnTop();
         }
 
         //

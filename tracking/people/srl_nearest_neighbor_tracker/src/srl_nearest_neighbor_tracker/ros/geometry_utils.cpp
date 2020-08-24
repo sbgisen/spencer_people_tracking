@@ -106,6 +106,7 @@ void GeometryUtils::convertDetectedPersonsToObservations(const spencer_tracking_
 
         Observation::Ptr observation(new Observation);
         observation->id = detectedPerson.detection_id;
+        observation->name = detectedPerson.name;
         observation->createdAt = currentTime;
         observation->confidence = detectedPerson.confidence;
 
