@@ -23,12 +23,17 @@
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch">
         <arg name="low_confidence_detections" value="false"/>
         <arg name="laser_max_distance" value="5"/>
+        <arg name="merged" value="false"/>
+        <arg name="front" value="true"/>
+        <arg name="rear" value="true"/>
     </include>
 
     <!-- Leg detectors -->
-    <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
+<!--     <include file="$(find spencer_people_tracking_launch)/launch/detectors/leg_detectors.launch">
+        <arg name="merged" value="false"/>
+        <arg name="front" value="true"/>
         <arg name="rear" value="false"/>
-    </include>
+    </include> -->
 
     <!-- People tracking -->
     <include file="$(find spencer_people_tracking_launch)/launch/tracking/freiburg_people_tracking.launch">
