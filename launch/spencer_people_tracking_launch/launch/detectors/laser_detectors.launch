@@ -41,7 +41,7 @@
         <group if="$(arg rear)">
             <!-- Rear laser detector (Adaboost) -->
             <include file="$(find srl_laser_detectors)/launch/learned_detector_with_segmentation.launch" ns="laser_rear">
-                <arg name="model" value="$(arg detector_model)"/>
+                <arg name="model_prefix" value="$(arg detector_model)"/>
                 <arg name="type" value="$(arg detector_type)"/>
                 <arg name="detected_persons" value="/spencer/perception_internal/detected_persons/laser_rear"/>
                 <arg name="laser" value="/map_scan_rear"/>
@@ -69,7 +69,7 @@
         <group if="$(arg merged)">
             <!-- Front laser detector (Adaboost) -->
             <include file="$(find srl_laser_detectors)/launch/learned_detector_with_segmentation.launch" ns="laser_front">
-                <arg name="model" value="$(arg detector_model)"/>
+                <arg name="model_prefix" value="$(arg detector_model)"/>
                 <arg name="type" value="$(arg detector_type)"/>
                 <arg name="detected_persons" value="/spencer/perception_internal/detected_persons/laser_front"/>
                 <arg name="laser" value="/map_scan"/>
