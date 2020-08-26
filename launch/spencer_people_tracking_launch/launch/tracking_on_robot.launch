@@ -23,9 +23,10 @@
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch">
         <arg name="low_confidence_detections" value="false"/>
         <arg name="laser_max_distance" value="5"/>
-        <arg name="merged" value="false"/>
-        <arg name="front" value="true"/>
-        <arg name="rear" value="true"/>
+        <arg name="merged" value="true"/>
+        <arg name="front" value="false"/>
+        <arg name="rear" value="false"/>
+        <arg name="foot" value="false"/>
     </include>
 
     <!-- Leg detectors -->
