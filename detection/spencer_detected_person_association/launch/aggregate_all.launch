@@ -34,7 +34,9 @@
 
     <!-- Aggregate face detections (care-o-bot) -->
     <group if="$(arg rgbd)">
-        <include file="$(find spencer_detected_person_association)/launch/aggregate_faces.launch"/>
+        <include file="$(find spencer_detected_person_association)/launch/aggregate_faces.launch">
+            <arg name="common_frame_id" value="$(arg common_frame_id)"/>
+        </include>
     </group>
 
 
