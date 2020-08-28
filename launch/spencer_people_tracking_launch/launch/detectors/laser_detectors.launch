@@ -10,7 +10,7 @@
     <arg name="foot"    default="true"/>
     <arg name="detector_model" default="$(find srl_laser_detectors)/models/lms500_0.25deg_height70cm_rathausgasse.random_forest"/>
     <arg name="detector_type" default="random_forest"/>
-    <arg name="laser_max_distance" default="5"/>
+    <arg name="laser_max_distance" default="20"/>
     <arg name="laser_foot_max_distance" default="3"/>
     <arg name="low_confidence_detections" default="true"/>
 
