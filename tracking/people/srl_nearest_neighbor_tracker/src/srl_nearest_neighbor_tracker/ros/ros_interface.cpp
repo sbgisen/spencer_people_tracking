@@ -186,6 +186,7 @@ void ROSInterface::publishTracks(ros::Time currentRosTime, const Tracks& tracks)
         person.velocity.x = trackedPerson.twist.twist.linear.x;
         person.velocity.y = trackedPerson.twist.twist.linear.y;
         person.velocity.z = trackedPerson.twist.twist.linear.z;
+        person.tags.push_back(std::to_string(trackedPerson.track_id));
         trackedPersons.tracks.push_back(trackedPerson);
         people.people.push_back(person);
     }

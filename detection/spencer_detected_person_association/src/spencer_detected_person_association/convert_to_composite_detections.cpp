@@ -49,9 +49,17 @@ namespace spencer_detected_person_association
         m_transformListener.reset(new tf::TransformListener());
         m_lastMessageReceivedAt = ros::Time(0);
 
-        // Subscribe to input topic
-        m_subscriber.reset(new ros::Subscriber( getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>("input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this) ));
+        // advertise service
+        enable = true;
+        getPrivateNodeHandle().getParam("enable", enable);
+        enable_convert = getPrivateNodeHandle().advertiseService(
+            "enable_convert", &ConvertToCompositeDetectionsNodelet::setEnableConvert, this);
 
+        // Subscribe to input topic
+        if(enable)
+        {
+            m_subscriber.reset(new ros::Subscriber( getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>("input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this) ));
+        }
         // Read parameters
 
         m_topicMonitorInterval = 3.0; // How often to check for new topics becoming active or topics going inactive, in seconds
@@ -64,6 +72,26 @@ namespace spencer_detected_person_association
 
         // Create monitor thread which monitors topics (=publishers) becoming active
         m_monitorThread = boost::thread(&ConvertToCompositeDetectionsNodelet::monitorInputTopic, this);
+    }
+
+    bool ConvertToCompositeDetectionsNodelet::setEnableConvert(std_srvs::SetBool::Request& req,
+                                                             std_srvs::SetBool::Response& res)
+    {
+      boost::mutex::scoped_lock lock(m_monitorMutex);
+      enable = req.data;
+      res.success = enable == req.data;
+      if (enable)
+      {
+        res.message = "enabled";
+        m_subscriber.reset(new ros::Subscriber(getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>(
+            "input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this)));
+        createPublisher();
+        }else{
+            res.message = "disabled";
+            m_subscriber->shutdown();
+            m_publisher->shutdown();
+        }
+        return true;
     }
 
 
@@ -85,19 +113,24 @@ namespace spencer_detected_person_association
 
         while(true) {
             bool deadInputTopic = ros::Time::now().toSec() - m_lastMessageReceivedAt.toSec() > m_assumeTopicDeadAfter;
-            if(m_subscriber->getNumPublishers() == 0 || deadInputTopic) {
-                // Unregister publisher if our input topic has become inactive
-                if(m_publisher) {
-                    ROS_ERROR_STREAM_COND(deadInputTopic, "Input topic " << getNodeHandle().resolveName(m_subscriber->getTopic())
-                      << " appears dead (no new messages received since " << std::fixed << std::setprecision(1)
-                      << m_assumeTopicDeadAfter << " seconds)! Maybe the detector has crashed? Shutting down CompositeDetectedPersons publisher.");
+            if (enable && (m_subscriber->getNumPublishers() == 0 || deadInputTopic))
+            {
+              // Unregister publisher if our input topic has become inactive
+              if (m_publisher)
+              {
+                ROS_ERROR_STREAM_COND(deadInputTopic,
+                                      "Input topic " << getNodeHandle().resolveName(m_subscriber->getTopic())
+                                                     << " appears dead (no new messages received since " << std::fixed
+                                                     << std::setprecision(1) << m_assumeTopicDeadAfter
+                                                     << " seconds)! Maybe the detector has crashed? Shutting down "
+                                                        "CompositeDetectedPersons publisher.");
 
-                    boost::mutex::scoped_lock lock(m_monitorMutex);
-                    m_publisher.reset();
-                }
+                boost::mutex::scoped_lock lock(m_monitorMutex);
+                m_publisher.reset();
+              }
             }
             else {
-                if(!m_publisher) {
+                if(!m_publisher && enable) {
                     boost::mutex::scoped_lock lock(m_monitorMutex);
                     createPublisher();
                 }
