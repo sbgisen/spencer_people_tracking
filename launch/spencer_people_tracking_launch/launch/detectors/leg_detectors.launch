@@ -15,7 +15,7 @@
     <group ns="/spencer/perception_internal/people_detection">
         <!-- Front -->
         <include file="$(find spencer_leg_detector_wrapper)/launch/leg_detector.launch" if="$(arg front)">
-            <arg name="scan" value="/urg_scan"/>
+            <arg name="scan" value="/map_scan"/>
             <arg name="node_prefix" value="$(arg node_prefix)_front"/>
             <arg name="detected_persons" value="/spencer/perception_internal/detected_persons/$(arg node_prefix)_front"/>
             <arg name="detection_id_increment" value="$(arg detection_id_increment)"/>

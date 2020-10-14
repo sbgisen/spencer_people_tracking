@@ -23,6 +23,8 @@
         <param name="detected_persons" value="$(arg detected_persons)" type="string"/>
         <param name="detection_id_offset" value="$(arg detection_id_offset)"/>
         <param name="detection_id_increment" value="$(arg detection_id_increment)"/>
+        <remap from="$(arg camera_namespace)/rgb/image_rect_color" to="$(arg camera_namespace)/color/image_rect_color"/>
+        <remap from="$(arg camera_namespace)/rgb/camera_info" to="$(arg camera_namespace)/color/camera_info"/>
     </node>
 
 </launch> 

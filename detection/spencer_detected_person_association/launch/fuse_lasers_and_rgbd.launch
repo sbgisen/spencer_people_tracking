@@ -12,8 +12,8 @@
         <node name="fuse_lasers_and_rgbd_upper_body" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
             <param name="detection_id_increment" value="20" />
             <param name="detection_id_offset" value="11" />
-            <param name="fused_radial_weight_for_topic1" value="0.95" />
-            <param name="fused_radial_weight_for_topic2" value="0.05" />
+            <!-- <param name="fused_radial_weight_for_topic1" value="0.95" />
+            <param name="fused_radial_weight_for_topic2" value="0.05" /> -->
             <rosparam param="input_topics">
                 - composite/lasers_aggregated
                 - composite/rgbd_upper_body_aggregated
@@ -24,8 +24,8 @@
         <node name="fuse_lasers_upper_body_and_face" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/EuclideanNNFuserNodelet detected_person_association_nodelet_manager" output="screen">
             <param name="detection_id_increment" value="20" />
             <param name="detection_id_offset" value="12" />
-            <param name="fused_radial_weight_for_topic1" value="0.99" />
-            <param name="fused_radial_weight_for_topic2" value="0.01" />
+            <!-- <param name="fused_radial_weight_for_topic1" value="0.99" />
+            <param name="fused_radial_weight_for_topic2" value="0.01" /> -->
             <rosparam param="input_topics">
                 - composite/lasers_upper_body_fused
                 - composite/faces_aggregated
@@ -44,10 +44,10 @@
             <param name="fused_radial_weight_for_topic1" value="0.95" />
             <param name="fused_radial_weight_for_topic2" value="0.05" />
             <rosparam param="input_topics">
-                - composite/lasers_upper_body_fused
+                - composite/lasers_upper_body_face_fused
                 - composite/rgbd_ground_hog_aggregated
             </rosparam>
-            <remap from="output" to="composite/lasers_upper_body_ground_hog_fused" />
+            <remap from="output" to="composite/lasers_upper_body_face_ground_hog_fused" />
         </node>
 
     </group>
