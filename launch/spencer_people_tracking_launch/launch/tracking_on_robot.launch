@@ -14,7 +14,7 @@
     <include file="$(find spencer_people_tracking_launch)/launch/detectors/rear_rgbd_detectors.launch">
         <arg name="upper_body" value="$(arg use_upper_body_detector)"/>
         <arg name="pcl_detector" value="$(arg use_pcl_detector)"/>
-        <arg name="hog" value="$(arg use_hog_detector)"/>
+        <arg name="hog" value="false"/>
     </include>
 
     <!-- Laser detectors -->
