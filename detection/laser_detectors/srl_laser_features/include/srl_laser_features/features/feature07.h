@@ -55,12 +55,13 @@ public:
 		if (dimension == 0) {
 			return "Boundary length.";
 		}
-		if (dimension == 1) {
+		else if (dimension == 1) {
 			return "Perimeter.";
 		}
-		if (dimension == 2) {
+		else if (dimension == 2) {
 			return "Contour regularity.";
 		}
+		else throw std::exception();
 	}
 
 	inline unsigned int getNDimensions() const

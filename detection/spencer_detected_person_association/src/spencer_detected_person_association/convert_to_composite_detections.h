@@ -37,6 +37,7 @@
 
 #include <tf/transform_listener.h>
 #include <nodelet/nodelet.h>
+#include <std_srvs/SetBool.h>
 
 #include <spencer_tracking_msgs/DetectedPersons.h>
 #include <spencer_tracking_msgs/CompositeDetectedPersons.h>
@@ -61,6 +62,9 @@ namespace spencer_detected_person_association
         // Executed in a separate thread, continuously monitors if the number of active topics has changed.
         void monitorInputTopic();
 
+        // Service callback
+        bool setEnableConvert(std_srvs::SetBool::Request& req, std_srvs::SetBool::Response& res);
+
         // Common frame that all detections are transformed into (if specified)
         std::string m_commonFrameId;
         boost::shared_ptr<tf::TransformListener> m_transformListener;
@@ -74,7 +78,10 @@ namespace spencer_detected_person_association
         // For monitoring if there are any publishers on the subscribed topic
         boost::mutex m_monitorMutex;
         boost::thread m_monitorThread;
-        double m_topicMonitorInterval;
+        double m_topicMonitorInterval, m_assumeTopicDeadAfter;
+        ros::Time m_lastMessageReceivedAt;
+        bool enable;
+        ros::ServiceServer enable_convert;
     };
 }
 

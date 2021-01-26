@@ -43,20 +43,55 @@ namespace spencer_detected_person_association
 {
     void ConvertToCompositeDetectionsNodelet::onInit()
     {
-        NODELET_INFO("Initializing ConvertToCompositeDetectionsNodelet...");
+        NODELET_DEBUG("Initializing ConvertToCompositeDetectionsNodelet...");
 
         getPrivateNodeHandle().getParam("common_frame_id", m_commonFrameId);
         m_transformListener.reset(new tf::TransformListener());
+        m_lastMessageReceivedAt = ros::Time(0);
+
+        // advertise service
+        enable = true;
+        getPrivateNodeHandle().getParam("enable", enable);
+        enable_convert = getPrivateNodeHandle().advertiseService(
+            "enable_convert", &ConvertToCompositeDetectionsNodelet::setEnableConvert, this);
 
         // Subscribe to input topic
-        m_subscriber.reset(new ros::Subscriber( getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>("input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this) ));
-
+        if(enable)
+        {
+            m_subscriber.reset(new ros::Subscriber( getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>("input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this) ));
+        }
         // Read parameters
+
         m_topicMonitorInterval = 3.0; // How often to check for new topics becoming active or topics going inactive, in seconds
         getPrivateNodeHandle().getParam("topic_monitor_interval", m_topicMonitorInterval);
 
+        // If no input msg is received from any publisher within this amount of seconds,
+        // assume all inputs are dead (e.g. due to detector crash) --> shutdown output topic to not block aggregator/fuser nodes
+        m_assumeTopicDeadAfter = 9.0;
+        getPrivateNodeHandle().getParam("assume_topic_dead_after", m_assumeTopicDeadAfter);
+
         // Create monitor thread which monitors topics (=publishers) becoming active
         m_monitorThread = boost::thread(&ConvertToCompositeDetectionsNodelet::monitorInputTopic, this);
+    }
+
+    bool ConvertToCompositeDetectionsNodelet::setEnableConvert(std_srvs::SetBool::Request& req,
+                                                             std_srvs::SetBool::Response& res)
+    {
+      boost::mutex::scoped_lock lock(m_monitorMutex);
+      enable = req.data;
+      res.success = enable == req.data;
+      if (enable)
+      {
+        res.message = "enabled";
+        m_subscriber.reset(new ros::Subscriber(getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>(
+            "input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this)));
+        createPublisher();
+        }else{
+            res.message = "disabled";
+            m_subscriber->shutdown();
+            m_publisher->shutdown();
+        }
+        return true;
     }
 
 
@@ -74,25 +109,35 @@ namespace spencer_detected_person_association
 
     void ConvertToCompositeDetectionsNodelet::monitorInputTopic()
     {
-        boost::posix_time::seconds monitorInterval( m_topicMonitorInterval );
+        boost::chrono::milliseconds monitorInterval( int(m_topicMonitorInterval * 1000.0) );
 
         while(true) {
-            if(m_subscriber->getNumPublishers() == 0) {
-                // Unregister publisher if our input topic has become inactive
-                if(m_publisher) {
-                    boost::mutex::scoped_lock lock(m_monitorMutex);
-                    m_publisher.reset();
-                }
+            bool deadInputTopic = ros::Time::now().toSec() - m_lastMessageReceivedAt.toSec() > m_assumeTopicDeadAfter;
+            if (enable && (m_subscriber->getNumPublishers() == 0 || deadInputTopic))
+            {
+              // Unregister publisher if our input topic has become inactive
+              if (m_publisher)
+              {
+                ROS_ERROR_STREAM_COND(deadInputTopic,
+                                      "Input topic " << getNodeHandle().resolveName(m_subscriber->getTopic())
+                                                     << " appears dead (no new messages received since " << std::fixed
+                                                     << std::setprecision(1) << m_assumeTopicDeadAfter
+                                                     << " seconds)! Maybe the detector has crashed? Shutting down "
+                                                        "CompositeDetectedPersons publisher.");
+
+                boost::mutex::scoped_lock lock(m_monitorMutex);
+                m_publisher.reset();
+              }
             }
             else {
-                if(!m_publisher) {
+                if(!m_publisher && enable) {
                     boost::mutex::scoped_lock lock(m_monitorMutex);
                     createPublisher();
                 }
             }
 
             // Sleep for a while
-            try { boost::this_thread::sleep(monitorInterval); }
+            try { boost::this_thread::sleep_for(monitorInterval); }
             catch(boost::thread_interrupted&) { return; } // stop thread
         }
     }
@@ -101,6 +146,9 @@ namespace spencer_detected_person_association
     void ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived(const spencer_tracking_msgs::DetectedPersons::ConstPtr& inputMsg)
     {
         spencer_tracking_msgs::CompositeDetectedPersons::Ptr outputMsg(new spencer_tracking_msgs::CompositeDetectedPersons);
+
+        // Remember current timestamp for topic monitoring
+        m_lastMessageReceivedAt = ros::Time::now();
 
         // Copy stamp, frame ID, seq
         outputMsg->header = inputMsg->header;
@@ -186,4 +234,4 @@ namespace spencer_detected_person_association
 }
 
 
-PLUGINLIB_DECLARE_CLASS(spencer_detected_person_association, ConvertToCompositeDetectionsNodelet, spencer_detected_person_association::ConvertToCompositeDetectionsNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(spencer_detected_person_association::ConvertToCompositeDetectionsNodelet, nodelet::Nodelet)

@@ -38,7 +38,7 @@ namespace spencer_detected_person_association
 {
     void AggregateDetectionsNodelet::onInit()
     {
-        NODELET_INFO("Initializing AggregateDetectionsNodelet...");
+        NODELET_DEBUG("Initializing AggregateDetectionsNodelet...");
         initSynchronizer(getName(), getNodeHandle(), getPrivateNodeHandle());
         m_seq = 0;
     }
@@ -70,4 +70,4 @@ namespace spencer_detected_person_association
 }
 
 
-PLUGINLIB_DECLARE_CLASS(spencer_detected_person_association, AggregateDetectionsNodelet, spencer_detected_person_association::AggregateDetectionsNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(spencer_detected_person_association::AggregateDetectionsNodelet, nodelet::Nodelet)

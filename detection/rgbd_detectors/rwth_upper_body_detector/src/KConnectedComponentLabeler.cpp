@@ -86,9 +86,9 @@ void KConnectedComponentLabeler::Process()
 	int	nWest = 0;
 	int	nEast = 0;
 	
-	int		 * regionLabel = NULL;
-	int		 * lookUpTable = NULL;
-	long int * regionArea  = NULL;
+	std::vector<int> regionLabel;
+	std::vector<long int> regionArea;
+	std::vector<int> lookUpTable;
 	
 	int	regionNumber;
 
@@ -166,8 +166,8 @@ void KConnectedComponentLabeler::Process()
 
 	if( regionNumber > 0 ) 
 	{
-		regionLabel  = new int[regionNumber];
-		regionArea   = new long int[label];
+		regionLabel.reserve(regionNumber);
+		regionArea.reserve(label);
 
 		for(i=0; i<label; i++ )
 			regionArea[i]=0;
@@ -182,7 +182,7 @@ void KConnectedComponentLabeler::Process()
 		}
 		while(tmp!=NULL);
 
-		lookUpTable = new int[label];
+		lookUpTable.reserve(label);
 	
 		p  = eqTable.header;
 		p2 = p;
@@ -229,17 +229,17 @@ void KConnectedComponentLabeler::Process()
 			}
 		}
 
-		int* trueLabelArray = new int[label];
+		std::vector<int> trueLabelArray(label);
 		for(i=0; i<label; i++)
 		{
 			trueLabelArray[i] = 0;
 
 			KBox newComponent;
 			newComponent.ID = i+1;
-                        newComponent.bottomRight_x = RAND_MAX;
-                        newComponent.bottomRight_y = RAND_MAX;
-                        newComponent.topLeft_x     = -RAND_MAX;
-                        newComponent.topLeft_y     = -RAND_MAX;
+			newComponent.bottomRight_x = RAND_MAX;
+			newComponent.bottomRight_y = RAND_MAX;
+			newComponent.topLeft_x     = -RAND_MAX;
+			newComponent.topLeft_y     = -RAND_MAX;
 			m_Components.push_back(newComponent);
 		}
 
@@ -290,19 +290,7 @@ void KConnectedComponentLabeler::Process()
 
         while( m_Components.size() != m_ObjectNumber )
             m_Components.pop_back();
-
-
-		delete trueLabelArray; trueLabelArray = NULL;
 	}
-	
-	delete []lookUpTable;
-	lookUpTable = NULL;
-
-	delete []regionArea;
-	regionArea = NULL;
-
-	delete []regionLabel;
-	regionLabel = NULL;
 }
 
 //////// private KNode implementations ////////////////////

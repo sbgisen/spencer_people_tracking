@@ -5,15 +5,17 @@
     <group ns="/spencer/perception_internal/detected_person_association">
         <!-- Convert DetectedPersons topics into CompositeDetectedPersons, and transform poses into common coordinate frame -->
         <node name="convert_to_composite_face_front" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/ConvertToCompositeDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
-            <remap from="input" to="/face_front/detection_tracker/face_position_for_spencer"/>
+            <remap from="input" to="/face_front/face_recognition/face_position"/>
             <remap from="output" to="composite/face_front"/>
             <param name="common_frame_id" value="$(arg common_frame_id)"/>
+            <param name="enable" value="false"/>
         </node> 
         
         <node name="convert_to_composite_face_rear" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/ConvertToCompositeDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
-            <remap from="input" to="/face_rear/detection_tracker/face_position_for_spencer"/>
+            <remap from="input" to="/face_rear/face_recognition/face_position"/>
             <remap from="output" to="composite/face_rear"/>
             <param name="common_frame_id" value="$(arg common_frame_id)"/>
+            <param name="enable" value="false"/>
         </node> 
         
         <!-- Aggregate front and rear lasers -->

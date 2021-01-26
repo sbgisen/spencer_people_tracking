@@ -245,7 +245,7 @@ int main(int argc, char **argv)
     std::string inputTopic = ros::names::resolve("input_detections");
     std::string outputTopic = ros::names::resolve("output_detections");
     g_mapTopic = ros::names::resolve("/map");
-    
+
     g_transformListener.reset(new tf::TransformListener);
 
     ros::spinOnce();

@@ -2,6 +2,30 @@
 Changelog for package rwth_ground_plane
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.2.1 (2020-08-26)
+------------------
+
+1.2.0 (2020-08-26)
+------------------
+* Merge branch 'master' into melodic
+* Contributors: Timm Linder
+
+1.0.11 (2020-08-26)
+-------------------
+* Various smaller fixes for ROS Kinetic
+  - Fix build warnings in laser_features and rwth_ground_plane
+  - Configurable odom and base footprint frame IDs (fixes `#53 <https://github.com/spencer-project/spencer_people_tracking/issues/53>`_)
+* Contributors: Timm Linder
+
+1.0.10 (2018-09-22)
+-------------------
+* Merge pull request `#47 <https://github.com/LCAS/spencer_people_tracking/issues/47>`_ from LCAS/master
+  1.0.8
+* Contributors: Timm Linder
+
+1.0.9 (2018-01-17)
+------------------
+
 1.0.8 (2017-09-22)
 ------------------
 * Merge pull request `#2 <https://github.com/LCAS/spencer_people_tracking/issues/2>`_ from spencer-project/master
