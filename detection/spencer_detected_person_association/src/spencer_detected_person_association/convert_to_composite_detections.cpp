@@ -83,13 +83,19 @@ namespace spencer_detected_person_association
       if (enable)
       {
         res.message = "enabled";
+        if (m_subscriber)
+          m_subscriber->shutdown();
         m_subscriber.reset(new ros::Subscriber(getNodeHandle().subscribe<spencer_tracking_msgs::DetectedPersons>(
             "input", 2, &ConvertToCompositeDetectionsNodelet::onNewInputMessageReceived, this)));
+        if(m_publisher)
+          m_publisher->shutdown();
         createPublisher();
         }else{
-            res.message = "disabled";
+          res.message = "disabled";
+          if (m_subscriber)
             m_subscriber->shutdown();
-            m_publisher->shutdown();
+            if (m_publisher)
+              m_publisher->shutdown();
         }
         return true;
     }

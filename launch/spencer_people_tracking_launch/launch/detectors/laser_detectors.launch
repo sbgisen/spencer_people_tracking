@@ -13,6 +13,7 @@
     <arg name="laser_max_distance" default="20"/>
     <arg name="laser_foot_max_distance" default="3"/>
     <arg name="low_confidence_detections" default="true"/>
+    <arg name="decision_threshold" default="0.05"/>
 
     <group ns="/spencer/perception_internal/people_detection">
         <group if="$(arg front)">
@@ -26,6 +27,7 @@
                 <arg name="detection_id_offset" value="$(arg detection_id_offset_front)"/>
                 <arg name="detection_id_increment" value="$(arg detection_id_increment)"/>
                 <arg name="pose_variance" value="0.1"/> <!-- affects gain of Kalman filter! may be overriden in nnt.launch! -->
+                <arg name="decision_threshold" value="$(arg decision_threshold)"/>
             </include>
             <!-- Front laser detector (Blob detector with high recall, but low precision) -->
             <!-- TODO: Use same segmentation as for high-precision detector -->
@@ -53,6 +55,7 @@
                 <arg name="detection_id_offset" value="$(arg detection_id_offset_rear)"/>
                 <arg name="detection_id_increment" value="$(arg detection_id_increment)"/>
                 <arg name="pose_variance" value="0.1"/> <!-- affects gain of Kalman filter! may be overriden in nnt.launch! -->
+                <arg name="decision_threshold" value="$(arg decision_threshold)"/>
             </include>
 
             <!-- Rear laser detector (Blob detector with high recall, but low precision) -->

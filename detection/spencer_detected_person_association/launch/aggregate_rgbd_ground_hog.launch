@@ -19,8 +19,8 @@
         <!-- Aggregate groundHOG in RGB-D -->
         <node name="aggregate_rgbd_ground_hog" pkg="nodelet" type="nodelet" args="load spencer_detected_person_association/AggregateDetectionsNodelet detected_person_association_nodelet_manager" output="screen" launch-prefix="nice -n 20">
             <rosparam param="input_topics">
-                <!-- - composite/rgbd_ground_hog_front
-                - composite/rgbd_ground_hog_rear -->
+                - composite/rgbd_ground_hog_front
+                - composite/rgbd_ground_hog_rear
             </rosparam>
             <remap from="output" to="composite/rgbd_ground_hog_aggregated"/>
         </node>
